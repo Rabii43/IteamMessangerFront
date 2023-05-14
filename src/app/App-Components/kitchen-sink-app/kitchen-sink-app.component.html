@@ -1,0 +1,32 @@
+<div class="location-section" style="overflow: hidden;" >
+  <section class="signup" style="margin-top: 100px;">
+    <div class="container">
+        <div class="signup-content">
+          <div class="signup-image">
+            <figure><img width="50" height="90" src="https://img.favpng.com/22/5/25/computer-icons-online-chat-livechat-conversation-clip-art-png-favpng-Kkf0gbpF6GCJg3cVLviYQUhMP.jpg" alt="sing up image"></figure>
+            <div >
+             Vous n'avez pas de compte ? <a class="form-register" (click)="this.router.navigate(['/register']);">Créer un compte</a>
+            </div>
+         </div>
+          <div class="signup-form">
+                <h4 class="form-title">Se connecter à votre compte sur IteamChat</h4>
+                <form method="POST" class="register-form" id="register-form"  novalidate>
+                  <div class="form-group">
+                    <label for="username"><i class="zmdi zmdi-username"></i></label>
+                    <input type="text" [(ngModel)]="userInput" name="username" id="username" placeholder="Nom d'utilisateur " />
+                  </div>
+                  <div class="form-group">
+                        <label for="password"><i class="zmdi zmdi-password"></i></label>
+                        <input type="password" name="password" id="password"  placeholder="Mot de passe "/>
+                  </div>
+                  <div class="form-group form-button">
+                        <input type="submit" (click) = 'onLogin(userInput)' e="signup" id="signup" class="form-submit btn  btn-block" value="Se connecter " style="font-size: 14px;"/>
+                  </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+</div>
+

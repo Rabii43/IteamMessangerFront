@@ -1,0 +1,45 @@
+<div class="location-section ">
+  <section class="signup">
+    <div class="container">
+        <div class="signup-content">
+          <div class="signup-image">
+            <figure><img width="50" height="90" src="https://img.favpng.com/22/5/25/computer-icons-online-chat-livechat-conversation-clip-art-png-favpng-Kkf0gbpF6GCJg3cVLviYQUhMP.jpg" alt="sing up image"></figure>
+            <div >
+             Vous avez déja un compte ? <a class="form-register" (click)=" this.router.navigate(['/login']);" >Se connecter</a>
+
+            </div>
+         </div>
+          <div class="signup-form">
+                <h4 class="form-title">S'inscrire à votre compte sur IteamChat</h4>
+                <form method="POST" class="register-form" id="register-form"  novalidate>
+                  <div class="form-group">
+                    <label for="username"><i class="zmdi zmdi-username"></i></label>
+                    <input type="text" [(ngModel)]="username" name="username" id="username" placeholder="Nom d'utilisateur " />
+                  </div>
+                  <div class="form-group">
+                    <label for="username"><i class="zmdi zmdi-username"></i></label>
+                    <input type="text" [(ngModel)]="name" name="username" id="username" placeholder="Nom complet " />
+                  </div>
+                  <div class="form-group">
+                    <label for="username"><i class="zmdi zmdi-username"></i></label>
+                    <input type="text" [(ngModel)]="email" name="username" id="username" placeholder="email" />
+                  </div>
+                  <div class="form-group">
+                    <label for="username"><i class="zmdi zmdi-username"></i></label>
+                    <input type="file" [(ngModel)]="photo"  name="username" id="username" placeholder="photo" />
+                  </div>
+                  <div class="form-group">
+                        <label for="password"><i class="zmdi zmdi-password"></i></label>
+                        <input type="password" name="password" id="password"  placeholder="Mot de passe "/>
+                  </div>
+                  <div class="form-group form-button">
+                        <input type="submit" (click) ='onRegister(userInput)' e="signup" id="signup" class="form-submit btn  btn-block" value="S'inscrire " style="font-size: 14px;"/>
+                  </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+</div>
+
