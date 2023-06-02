@@ -24,7 +24,7 @@
       [item]="curentItem"
       (onUserClick)="userClicked($event)"
       (actionGenerated)="actionHandler($event)"
-    
+
     ></cometchat-user-list>
   </div>
 
@@ -60,7 +60,7 @@
     <!--UserList Ends-->
 
     <!--GroupList-->
-    <div class="itemStyle" (click)="openGroupList()" title="Groups"> 
+    <div class="itemStyle" (click)="openGroupList()" title="Groups">
       <div
         class="itemLinkStyle Groups"
         [ngClass]="{
@@ -81,4 +81,5 @@
     </div>
     <!--UserInfo Ends-->
   </div>
+  <div class="itemStyle" (click)="logout()">Déconnection</div>
 </div>

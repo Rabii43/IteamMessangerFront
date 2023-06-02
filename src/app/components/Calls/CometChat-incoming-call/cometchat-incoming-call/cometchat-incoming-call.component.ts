@@ -1,31 +1,23 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy, ElementRef, ViewChild} from "@angular/core";
-import { ChangeDetectorRef } from "@angular/core";
-import * as enums from "../../../../utils/enums";
-import { CometChat } from "@cometchat-pro/chat";
-import { CometChatManager } from "../../../../utils/controller";
-import { INCOMING_CALL_ALERT } from "../../../../resources/audio/incomingCallAlert";
-import { trigger, style, transition, animate } from "@angular/animations";
-import { COMETCHAT_CONSTANTS } from "../../../../utils/messageConstants";
-import { logger } from "../../../../utils/common";
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import * as enums from '../../../../utils/enums';
+import {CometChat} from '@cometchat-pro/chat';
+import {CometChatManager} from '../../../../utils/controller';
+import {INCOMING_CALL_ALERT} from '../../../../resources/audio/incomingCallAlert';
+import {animate, style, transition, trigger} from '@angular/animations';
+import {COMETCHAT_CONSTANTS} from '../../../../utils/messageConstants';
+import {logger} from '../../../../utils/common';
 
 @Component({
-  selector: "cometchat-incoming-call",
-  templateUrl: "./cometchat-incoming-call.component.html",
-  styleUrls: ["./cometchat-incoming-call.component.css"],
-  animations: [
-    trigger("slideInOut", [
-      transition(":enter", [
-        style({ transform: "translateY(-100%)" }),
-        animate("250ms ease-in", style({ transform: "translateY(0%)" })),
-      ]),
-    ]),
-  ],
+  selector: 'cometchat-incoming-call',
+  templateUrl: './cometchat-incoming-call.component.html',
+  styleUrls: ['./cometchat-incoming-call.component.css'],
+  animations: [trigger('slideInOut', [transition(':enter', [style({transform: 'translateY(-100%)'}), animate('250ms ease-in', style({transform: 'translateY(0%)'})),]),]),],
 })
-export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
-  @ViewChild("callScreenFrame", { static: false }) callScreenFrame!: ElementRef;
+export class CometChatIncomingCallComponent implements OnInit, OnDestroy {
+  @ViewChild('callScreenFrame', {static: false}) callScreenFrame!: ElementRef;
   public prevValue = null;
   incomingCall: any = null;
-  callInProgress:boolean | null = false;
+  callInProgress: boolean | null = false;
   callListenerId = enums.INCOMING_CALL_ + new Date().getTime();
   @Output() actionGenerated: EventEmitter<any> = new EventEmitter();
 
@@ -41,28 +33,29 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
 
   CALL_TYPE_AUDIO: String = CometChat.CALL_TYPE.AUDIO;
   CALL_TYPE_VIDEO: String = CometChat.CALL_TYPE.VIDEO;
- 
+
   loggedInUser: any;
 
-  constructor(private ref:ChangeDetectorRef) {}
+  constructor(private ref: ChangeDetectorRef) {
+  }
 
 
   ngOnInit() {
     try {
-      CometChat.getLoggedinUser().then((user)=>{
-   
-        this.loggedInUser = user
-      })
+      CometChat.getLoggedinUser().then((user) => {
+
+        this.loggedInUser = user;
+      });
       this.attachListeners();
       this.loadAudio();
     } catch (error) {
       logger(error);
     }
   }
+
   ngOnDestroy() {
-    this.pauseAudio()
-    this.removeListeners()
-  
+    this.pauseAudio();
+    this.removeListeners();
   }
 
   /**
@@ -71,21 +64,17 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
    */
   attachListeners() {
     try {
-      CometChat.addCallListener(
-        this.callListenerId,
-        new CometChat.CallListener({
-          onIncomingCallReceived: (call: any) => {
-         
-            this.callScreenUpdated(enums.INCOMING_CALL_RECEIVED, call);
-  
-          },
-          onIncomingCallCancelled: (call: any) => {
+      CometChat.addCallListener(this.callListenerId, new CometChat.CallListener({
+        onIncomingCallReceived: (call: any) => {
+
+          this.callScreenUpdated(enums.INCOMING_CALL_RECEIVED, call);
+
+        }, onIncomingCallCancelled: (call: any) => {
 
           this.callScreenUpdated(enums.INCOMING_CALL_CANCELLED, call);
-           
-          },
-        })
-      );
+
+        },
+      }));
     } catch (error) {
       logger(error);
     }
@@ -107,21 +96,21 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
    * Updates the call screen and opens/closes outgoing callScreen , depending on action taken by user
    * @param
    */
-  callScreenUpdated(key: any, call: any):any {
+  callScreenUpdated(key: any, call: any): any {
     try {
       switch (key) {
         case enums.INCOMING_CALL_RECEIVED: {
-          
+
           //occurs at the callee end
           this.incomingCallReceived(call);
-          this.ref.detectChanges()
+          this.ref.detectChanges();
           break;
         }
         case enums.INCOMING_CALL_CANCELLED: {
 
           //occurs(call dismissed) at the callee end, caller cancels the call
           this.incomingCallCancelled();
-          this.ref.detectChanges()
+          this.ref.detectChanges();
           break;
         }
 
@@ -151,27 +140,25 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
             //mark as read incoming call message
             this.markMessageAsRead(incomingCall);
             this.actionGenerated.emit({
-              type: enums.REJECTED_INCOMING_CALL,
-              payLoad: { incomingCall, rejectedCall: rejectedCall },
+              type: enums.REJECTED_INCOMING_CALL, payLoad: {incomingCall, rejectedCall: rejectedCall},
             });
           })
           .catch((error) => {
             this.actionGenerated.emit({
-              type: enums.CALL_ERROR,
-              payLoad: error,
+              type: enums.CALL_ERROR, payLoad: error,
             });
 
-            logger("Call rejection failed with error:", error);
+            logger('Call rejection failed with error:', error);
           });
       } else if (this.incomingCall === null) {
-     
+
         this.incomingCall = incomingCall;
-       
+
 
         if (this.incomingCall !== null) {
           this.playAudio();
-          this.ref.detectChanges()
-         
+          this.ref.detectChanges();
+
         }
       }
     } catch (error) {
@@ -186,10 +173,7 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
   markMessageAsRead(message: any) {
     try {
       const receiverType = message.receiverType;
-      const receiverId =
-        receiverType === CometChat.RECEIVER_TYPE.USER
-          ? message.sender.uid
-          : message.receiverId;
+      const receiverId = receiverType === CometChat.RECEIVER_TYPE.USER ? message.sender.uid : message.receiverId;
 
       if (message.hasOwnProperty(enums.READ_AT) === false) {
         CometChat.markAsRead(message);
@@ -207,7 +191,7 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
     //we are not marking this as read as it will done in messagelist component
     this.pauseAudio();
     this.incomingCall = null;
-    this.ref.detectChanges()
+    this.ref.detectChanges();
   }
 
   /**
@@ -215,35 +199,30 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
    */
   rejectCall() {
     try {
-     
+
       this.pauseAudio();
-      CometChatManager.rejectCall(
-        this.incomingCall.sessionId,
-        CometChat.CALL_STATUS.REJECTED
-      )
+      CometChatManager.rejectCall(this.incomingCall.sessionId, CometChat.CALL_STATUS.REJECTED)
         .then((rejectedCall) => {
-         
+
           this.pauseAudio();
           this.actionGenerated.emit({
-            type: enums.REJECTED_INCOMING_CALL,
-            payLoad: {
-              incomingCall: this.incomingCall,
-              rejectedCall: rejectedCall,
+            type: enums.REJECTED_INCOMING_CALL, payLoad: {
+              incomingCall: this.incomingCall, rejectedCall: rejectedCall,
             },
           });
           this.incomingCall = null;
-          this.ref.detectChanges()
-        
+          this.ref.detectChanges();
+
         })
         .catch((error) => {
-          this.actionGenerated.emit({ type: enums.CALL_ERROR, payLoad: error });
+          this.actionGenerated.emit({type: enums.CALL_ERROR, payLoad: error});
           this.incomingCall = null;
-          this.ref.detectChanges()
+          this.ref.detectChanges();
         });
     } catch (error) {
       logger(error);
     }
-    
+
   }
 
   /**
@@ -252,120 +231,107 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
   acceptCall() {
     try {
       this.pauseAudio();
-     this.acceptIncomingCall()
+      this.acceptIncomingCall();
 
       // this.actionGenerated.emit({
       //   type: enums.ACCEPT_INCOMING_CALL,
       //   payLoad: this.incomingCall,
       // });
-     
+
     } catch (error) {
       logger(error);
     }
   }
+
   /**
    * Accepts the incoming call , if call is accpeted by the current user
    * @param
    */
-   acceptIncomingCall() {
-   
+  acceptIncomingCall() {
+
     try {
       CometChatManager.acceptCall(this.incomingCall.sessionId)
         .then((call) => {
           this.actionGenerated.emit({
-            type: enums.ACCEPTED_INCOMING_CALL,
-            payLoad: call,
+            type: enums.ACCEPTED_INCOMING_CALL, payLoad: call,
           });
 
           this.callInProgress = true;
-          this.ref.detectChanges()
+          this.ref.detectChanges();
 
           setTimeout(() => {
             this.startCall(call);
-            
+
           }, 100);
-        
+
         })
         .catch((error) => {
-          logger("[CallScreen] acceptCall -- error", error);
-          this.actionGenerated.emit({ type: enums.CALL_ERROR, payLoad: error });
+          logger('[CallScreen] acceptCall -- error', error);
+          this.actionGenerated.emit({type: enums.CALL_ERROR, payLoad: error});
         });
     } catch (error) {
       logger(error);
     }
   }
-    /**
+
+  /**
    * Starts the call , if the outgoing call is accepted by the person , that you are calling
    * @param any call
    */
-     startCall(call: any) {
-   
-      try {
-        this.incomingCall = null;
-        const el = (this.callScreenFrame.nativeElement) ? this.callScreenFrame.nativeElement : null;
-        const sessionId = call.getSessionId();
-        const callType = call.type;
-  
-        const callSettings = new CometChat.CallSettingsBuilder()
-          .setSessionID(sessionId)
-          .enableDefaultLayout(true)
-          .setMode(CometChat.CALL_MODE.DEFAULT)
-          .setIsAudioOnlyCall(
-            callType === CometChat.CALL_TYPE.AUDIO ? true : false
-          )
-          .build();
-  
-        CometChat.startCall(
-          callSettings,
-          el,
-          new CometChat.OngoingCallListener({
-            onUserJoined: (user: any) => {
-              /* Notification received here if another user joins the call. */
-              /* this method can be use to display message or perform any actions if someone joining the call */
-  
-              //call initiator gets the same info in outgoingcallaccpeted event
-              if (
-                call.callInitiator.uid !== this.loggedInUser.uid &&
-                call.callInitiator.uid !== user.uid
-              ) {
-             
-              }
-            },
-            
-            onUserLeft: (user: any) => {
-              /* Notification received here if another user left the call. */
-  
-              /* this method can be use to display message or perform any actions if someone leaving the call */
-  
-              //call initiator gets the same info in outgoingcallaccpeted event
-              if (
-                call.callInitiator.uid !== this.loggedInUser.uid &&
-                call.callInitiator.uid !== user.uid
-              ) {
-          
-              }
-            },
-            onCallEnded: (endedCall: any) => {
-              /* Notification received here if current ongoing call is ended. */
-             this.callInProgress = null
-             this.actionGenerated.emit({
-              type: enums.CALL_ENDED_BY_USER,
-              payLoad: endedCall,
-            });
-              this.ref.detectChanges()
-             
-  
-              /* hiding/closing the call screen can be done here. */
-            },
-            
-          })
-        );
-      } catch (error) {
-        logger(error);
-      }
-  
-     
+  startCall(call: any) {
+
+    try {
+      this.incomingCall = null;
+      const el = (this.callScreenFrame.nativeElement) ? this.callScreenFrame.nativeElement : null;
+      const sessionId = call.getSessionId();
+      const callType = call.type;
+
+      const callSettings = new CometChat.CallSettingsBuilder()
+        .setSessionID(sessionId)
+        .enableDefaultLayout(true)
+        .setMode(CometChat.CALL_MODE.DEFAULT)
+        .setIsAudioOnlyCall(callType === CometChat.CALL_TYPE.AUDIO ? true : false)
+        .build();
+
+      CometChat.startCall(callSettings, el, new CometChat.OngoingCallListener({
+        onUserJoined: (user: any) => {
+          /* Notification received here if another user joins the call. */
+          /* this method can be use to display message or perform any actions if someone joining the call */
+
+          //call initiator gets the same info in outgoingcallaccpeted event
+          if (call.callInitiator.uid !== this.loggedInUser.uid && call.callInitiator.uid !== user.uid) {
+
+          }
+        },
+
+        onUserLeft: (user: any) => {
+          /* Notification received here if another user left the call. */
+
+          /* this method can be use to display message or perform any actions if someone leaving the call */
+
+          //call initiator gets the same info in outgoingcallaccpeted event
+          if (call.callInitiator.uid !== this.loggedInUser.uid && call.callInitiator.uid !== user.uid) {
+
+          }
+        }, onCallEnded: (endedCall: any) => {
+          /* Notification received here if current ongoing call is ended. */
+          this.callInProgress = null;
+          this.actionGenerated.emit({
+            type: enums.CALL_ENDED_BY_USER, payLoad: endedCall,
+          });
+          this.ref.detectChanges();
+
+
+          /* hiding/closing the call screen can be done here. */
+        },
+
+      }));
+    } catch (error) {
+      logger(error);
     }
+
+
+  }
 
   /**
    * Loads the audio
@@ -378,27 +344,23 @@ export class CometChatIncomingCallComponent implements OnInit,OnDestroy{
       logger(error);
     }
   }
- 
+
 
   /**
    * Plays Audio in loop
    */
   playAudio() {
     try {
-     
+
       this.audio.currentTime = 0;
       if (typeof this.audio.loop == enums.Boolean) {
         this.audio.loop = true;
-        this.ref.detectChanges()
+        this.ref.detectChanges();
       } else {
-        this.audio.addEventListener(
-          enums.ENDED,
-          () => {
-            this.currentTime = 0;
-            this.playAudio();
-          },
-          false
-        );
+        this.audio.addEventListener(enums.ENDED, () => {
+          this.currentTime = 0;
+          this.playAudio();
+        }, false);
       }
       this.audio.play();
     } catch (error) {

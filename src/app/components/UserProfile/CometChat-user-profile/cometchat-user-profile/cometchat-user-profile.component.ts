@@ -1,12 +1,13 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { CometChat } from "@cometchat-pro/chat";
-import { COMETCHAT_CONSTANTS } from "../../../../utils/messageConstants";
-import { logger } from "../../../../utils/common";
-import * as enums from '../../../../utils/enums'
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {CometChat} from '@cometchat-pro/chat';
+import {COMETCHAT_CONSTANTS} from '../../../../utils/messageConstants';
+import {logger} from '../../../../utils/common';
+import * as enums from '../../../../utils/enums';
+
 @Component({
-  selector: "cometchat-user-profile",
-  templateUrl: "./cometchat-user-profile.component.html",
-  styleUrls: ["./cometchat-user-profile.component.css"],
+  selector: 'cometchat-user-profile',
+  templateUrl: './cometchat-user-profile.component.html',
+  styleUrls: ['./cometchat-user-profile.component.css'],
 })
 export class CometChatUserProfileComponent implements OnInit {
   msgListenerId = enums.MESSAGE_ + new Date().getTime();
@@ -26,7 +27,8 @@ export class CometChatUserProfileComponent implements OnInit {
   HELP: String = COMETCHAT_CONSTANTS.HELP;
   REPORT_PROBLEM: String = COMETCHAT_CONSTANTS.REPORT_PROBLEM;
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit() {
     try {
@@ -38,16 +40,16 @@ export class CometChatUserProfileComponent implements OnInit {
       this.msgListenerId,
       new CometChat.MessageListener({
         onCustomMessageReceived: (customMessage: any) => {
-          if(customMessage.type == enums.CALL_TYPE_DIRECT){
-        
+          if (customMessage.type == enums.CALL_TYPE_DIRECT) {
+
             this.actionGenerated.emit({
-              type:enums.CALL_TYPE_DIRECT,
-              payLoad:customMessage
-            })
+              type: enums.CALL_TYPE_DIRECT,
+              payLoad: customMessage
+            });
           }
           // this.messageUpdated(enums.CUSTOM_MESSAGE_RECEIVED, customMessage);
         },
-     
+
       })
     );
   }
@@ -64,7 +66,7 @@ export class CometChatUserProfileComponent implements OnInit {
         })
         .catch((error) => {
           logger(
-            "[CometChatUserInfoScreen] getProfile getLoggedInUser error",
+            '[CometChatUserInfoScreen] getProfile getLoggedInUser error',
             error
           );
         });

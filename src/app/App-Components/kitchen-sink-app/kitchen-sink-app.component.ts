@@ -1,25 +1,23 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { CometChat } from "@cometchat-pro/chat";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {CometChat} from '@cometchat-pro/chat';
 //import { ToastrService } from "ngx-toastr";
-import { COMETCHAT_CONSTANTS } from "src/CONSTS";
+import {COMETCHAT_CONSTANTS} from 'src/CONSTS';
 
 @Component({
-  selector: "app-kitchen-sink-app",
-  templateUrl: "./kitchen-sink-app.component.html",
-  styleUrls: ["./kitchen-sink-app.component.scss"],
+  selector: 'app-kitchen-sink-app',
+  templateUrl: './kitchen-sink-app.component.html',
+  styleUrls: ['./kitchen-sink-app.component.scss'],
 })
 export class KitchenSinkAppComponent implements OnInit {
-  userInput: any = "";
-
+  userInput: any = '';
+  onLoginError: boolean = false;
+  errorMsg: string = '';
 
   constructor(
     public router: Router,
-   // private toastr: ToastrService
-    ) {}
-
-  onLoginError: boolean = false;
-  errorMsg: string = "";
+  ) {
+  }
 
   ngOnInit() {
 
@@ -32,11 +30,20 @@ export class KitchenSinkAppComponent implements OnInit {
   onLogin(UID) {
     CometChat.login(UID, COMETCHAT_CONSTANTS.AUTH_KEY).then(
       (user) => {
-      //  this.toastr.success("Utilisateur connecté avec succès");
-        this.router.navigate(["/Home"]);
+        console.log('Login Successful:', {user});
+        if (user.getDeactivatedAt() === 1) {
+          alert('Utilisateur désactivé par l\'administrateur');
+          return;
+        }
+        alert('Utilisateur connecté avec succès');
+        if (user.getRole() === 'admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/Home']);
+        }
       },
       (error) => {
-       // this.toastr.error("Erreur lors de la connexion de l'utilisateur","Verifiez votre identifiant");
+        // this.toastr.error("Erreur lors de la connexion de l'utilisateur","Verifiez votre identifiant");
         this.onLoginError = true;
         this.errorMsg = error.message;
       }

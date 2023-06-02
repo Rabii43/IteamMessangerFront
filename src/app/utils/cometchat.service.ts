@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CometChatService {
 
-  /* 
+  /*
    Getting deleted conversation from cometchat-convsersation-list component.
    */
   conversationDeleted = new Subject();
@@ -22,6 +22,6 @@ export class CometChatService {
   onLeaveGroup = new Subject();
 
   // directcalll listener
-  
+
 
 }

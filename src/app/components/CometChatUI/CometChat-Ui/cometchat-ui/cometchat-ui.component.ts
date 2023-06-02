@@ -1,37 +1,31 @@
-import { Component, OnInit, HostListener, Output, EventEmitter, ViewChild } from "@angular/core";
-import { CometChatManager } from "../../../../utils/controller";
-import * as enums from "../../../../utils/enums";
-import { CometChat } from "@cometchat-pro/chat";
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-} from "@angular/animations";
-import { getUnixTimestamp, ID, logger } from "../../../../utils/common";
-import { CometChatService } from "./../../../../utils/cometchat.service";
+import {Component, HostListener, OnInit} from '@angular/core';
+import {CometChatManager} from '../../../../utils/controller';
+import * as enums from '../../../../utils/enums';
+import {CometChat} from '@cometchat-pro/chat';
+import {animate, state, style, transition, trigger,} from '@angular/animations';
+import {getUnixTimestamp, ID, logger} from '../../../../utils/common';
+import {CometChatService} from './../../../../utils/cometchat.service';
 
 @Component({
-  selector: "CometChatUI",
-  templateUrl: "./cometchat-ui.component.html",
-  styleUrls: ["./cometchat-ui.component.css"],
+  selector: 'CometChatUI',
+  templateUrl: './cometchat-ui.component.html',
+  styleUrls: ['./cometchat-ui.component.css'],
   animations: [
-    trigger("FadeInFadeOut", [
+    trigger('FadeInFadeOut', [
       state(
-        "normal",
+        'normal',
         style({
-          left: "0%",
+          left: '0%',
         })
       ),
       state(
-        "animated",
+        'animated',
         style({
-          left: "-100%",
-          zIndex: "0",
+          left: '-100%',
+          zIndex: '0',
         })
       ),
-      transition("normal<=>animated", animate(300)),
+      transition('normal<=>animated', animate(300)),
     ]),
   ],
 })
@@ -55,8 +49,8 @@ export class CometChatUIComponent implements OnInit {
   fullScreenViewImage: boolean = false;
   imageView: object = {};
   // for direct call
-  joinDirectCall:any;
-  incomingDirectCall:any;
+  joinDirectCall: any;
+  incomingDirectCall: any;
 
   //for audio calling
   outgoingCall = null;
@@ -72,7 +66,8 @@ export class CometChatUIComponent implements OnInit {
   GROUP: String = CometChat.RECEIVER_TYPE.GROUP;
   USER: String = CometChat.RECEIVER_TYPE.USER;
 
-  constructor(private CometChatService: CometChatService) { }
+  constructor(private CometChatService: CometChatService) {
+  }
 
   ngOnInit() {
     // if(this.item.guid){
@@ -88,7 +83,7 @@ export class CometChatUIComponent implements OnInit {
           this.loggedInUser = user;
         })
         .catch((error) => {
-          logger("[CometChatUnified] getLoggedInUser error", error);
+          logger('[CometChatUnified] getLoggedInUser error', error);
         });
 
       /*
@@ -104,7 +99,7 @@ export class CometChatUIComponent implements OnInit {
           && this.item.guid === conversation.conversationWith.guid) {
           this.item = null;
         }
-      })
+      });
 
 
       /*
@@ -113,7 +108,7 @@ export class CometChatUIComponent implements OnInit {
       this.CometChatService.onLeaveGroup.subscribe((group: any) => {
         this.toggleDetailView();
         this.item = null;
-      })
+      });
     } catch (error) {
       logger(error);
     }
@@ -123,7 +118,7 @@ export class CometChatUIComponent implements OnInit {
   /**
    * Checks when window size is changed in realtime
    */
-  @HostListener("window:resize", [])
+  @HostListener('window:resize', [])
   onResize(): boolean {
     try {
       this.innerWidth = window.innerWidth;
@@ -134,7 +129,7 @@ export class CometChatUIComponent implements OnInit {
         if (this.checkIfAnimated === true) {
           return false;
         }
-        this.checkAnimatedState = "normal";
+        this.checkAnimatedState = 'normal';
         this.checkIfAnimated = true;
       } else {
         this.checkAnimatedState = null;
@@ -161,7 +156,7 @@ export class CometChatUIComponent implements OnInit {
           this.blockUser();
           break;
         case enums.DIRECT_CALL_STARTED:
-          this.appendCallMessage(message)
+          this.appendCallMessage(message);
           break;
 
         case enums.UNBLOCK_USER:
@@ -230,13 +225,13 @@ export class CometChatUIComponent implements OnInit {
           break;
         }
         case enums.DIRECT_CALL: {
-          this.directVideoCall()
+          this.directVideoCall();
           break;
         }
 
         case enums.INCOMING_DIRECT_CALL: {
 
-          this.startIncomingCall(message)
+          this.startIncomingCall(message);
           break;
         }
 
@@ -254,7 +249,7 @@ export class CometChatUIComponent implements OnInit {
         }
         case enums.DIRECT_CALL_ENDED:
 
-          this.updateDirectCall()
+          this.updateDirectCall();
 
           break;
 
@@ -277,13 +272,13 @@ export class CometChatUIComponent implements OnInit {
         }
         case enums.CALL_ERROR: {
           logger(
-            "User List screen --> call couldn't complete due to error",
+            'User List screen --> call couldn\'t complete due to error',
             action.payLoad
           );
           break;
         }
         case enums.MENU_CLICKED: {
-          this.checkAnimatedState = "normal";
+          this.checkAnimatedState = 'normal';
           this.item = null;
           break;
         }
@@ -292,7 +287,7 @@ export class CometChatUIComponent implements OnInit {
           break;
         }
         case enums.SESSION_ID: {
-          this.sendSessionId(action)
+          this.sendSessionId(action);
           break;
         }
 
@@ -317,10 +312,11 @@ export class CometChatUIComponent implements OnInit {
       logger(error);
     }
   }
+
   updateDirectCall() {
     this.joinDirectCall = null;
-    this.outgoingCall = null
-    this.type = "group"
+    this.outgoingCall = null;
+    this.type = 'group';
 
   }
 
@@ -342,12 +338,14 @@ export class CometChatUIComponent implements OnInit {
       logger(error);
     }
   }
+
   // incoming direct call
-  startIncomingCall(message:object) {
-    this.type = enums.INCOMING_DIRECT_CALL
-    this.incomingDirectCall = message
+  startIncomingCall(message: object) {
+    this.type = enums.INCOMING_DIRECT_CALL;
+    this.incomingDirectCall = message;
 
   }
+
   /**
    * Updates the thread message , it the currently open thread parent is deleted or is edited
    */
@@ -358,20 +356,21 @@ export class CometChatUIComponent implements OnInit {
       }
 
       if (action === enums.DELETE) {
-        this.threadMessageParent = { ...message };
+        this.threadMessageParent = {...message};
         this.threadMessageView = false;
       } else {
-        this.threadMessageParent = { ...message };
+        this.threadMessageParent = {...message};
       }
     } catch (error) {
       logger(error);
     }
     return true;
   };
+
   // session id join data
-  sendSessionId(action:any) {
+  sendSessionId(action: any) {
     this.type = action.type;
-    this.joinDirectCall = action.sessionid ? action.sessionid : action.payLoad
+    this.joinDirectCall = action.sessionid ? action.sessionid : action.payLoad;
   }
 
   /*
@@ -421,11 +420,11 @@ export class CometChatUIComponent implements OnInit {
       let usersList = [this.item.uid];
       CometChatManager.blockUsers(usersList)
         .then((list) => {
-          this.item = { ...this.item, blockedByMe: true };
+          this.item = {...this.item, blockedByMe: true};
           this.curentItem = this.item;
         })
         .catch((error) => {
-          logger("Blocking user fails with error", error);
+          logger('Blocking user fails with error', error);
         });
     } catch (error) {
       logger(error);
@@ -440,11 +439,11 @@ export class CometChatUIComponent implements OnInit {
       let usersList = [this.item.uid];
       CometChatManager.unblockUsers(usersList)
         .then((list) => {
-          this.item = { ...this.item, blockedByMe: false };
+          this.item = {...this.item, blockedByMe: false};
           this.curentItem = this.item;
         })
         .catch((error) => {
-          logger("unblocking user fails with error", error);
+          logger('unblocking user fails with error', error);
         });
     } catch (error) {
       logger(error);
@@ -457,9 +456,9 @@ export class CometChatUIComponent implements OnInit {
   userClicked(user: any) {
     try {
       if (this.checkAnimatedState !== null) {
-        this.checkAnimatedState == "normal"
-          ? (this.checkAnimatedState = "animated")
-          : (this.checkAnimatedState = "normal");
+        this.checkAnimatedState == 'normal'
+          ? (this.checkAnimatedState = 'animated')
+          : (this.checkAnimatedState = 'normal');
       }
       this.item = user;
       if (this.item.hasOwnProperty(enums.UID)) {
@@ -534,7 +533,7 @@ export class CometChatUIComponent implements OnInit {
    */
   updateMembersCount = (item: any, count: any) => {
     try {
-      const group = Object.assign({}, this.item, { membersCount: count });
+      const group = Object.assign({}, this.item, {membersCount: count});
 
       this.item = group;
       this.groupToUpdate = group;
@@ -639,12 +638,12 @@ export class CometChatUIComponent implements OnInit {
 
       CometChatManager.call(receiverId, receiverType, CometChat.CALL_TYPE.AUDIO)
         .then((call: any) => {
-    
+
           this.appendCallMessage(call);
           this.outgoingCall = call;
         })
         .catch((error) => {
-          logger("Call initialization failed with exception:", error);
+          logger('Call initialization failed with exception:', error);
         });
     } catch (error) {
       logger(error);
@@ -671,7 +670,7 @@ export class CometChatUIComponent implements OnInit {
           this.outgoingCall = call;
         })
         .catch((error) => {
-          logger("Call initialization failed with exception:", error);
+          logger('Call initialization failed with exception:', error);
         });
     } catch (error) {
       logger(error);
@@ -717,11 +716,11 @@ export class CometChatUIComponent implements OnInit {
 
       CometChat.getConversation(id, type)
         .then((conversation: any) => {
-          this.item = { ...conversation.conversationWith };
+          this.item = {...conversation.conversationWith};
           this.type = type;
         })
         .catch((error) => {
-          logger("error while fetching a conversation", error);
+          logger('error while fetching a conversation', error);
         });
     } catch (error) {
       logger(error);
@@ -781,17 +780,20 @@ export class CometChatUIComponent implements OnInit {
       logger(error);
     }
   }
+
   directVideoCall() {
-    this.type = enums.DIRECT_CALL
+    this.type = enums.DIRECT_CALL;
 
   }
-  outgoingDirectCall(action:object) {
-    this.appendCallMessage(this.makeCustomMessage(action))
+
+  outgoingDirectCall(action: object) {
+    this.appendCallMessage(this.makeCustomMessage(action));
 
   }
-  makeCustomMessage(action:any) {
+
+  makeCustomMessage(action: any) {
     const receiverType = CometChat.RECEIVER_TYPE.GROUP;
-    const customData = { "sessionID": action.sessionid, "sessionId": action.sessionid, "callType": CometChat.CALL_TYPE.VIDEO };
+    const customData = {'sessionID': action.sessionid, 'sessionId': action.sessionid, 'callType': CometChat.CALL_TYPE.VIDEO};
     const customType = enums.DIRECT_CALL;
     const conversationId = `group_${action.sessionid}`;
 
@@ -801,6 +803,6 @@ export class CometChatUIComponent implements OnInit {
     customMessage.setConversationId(conversationId);
     customMessage.composedAt = getUnixTimestamp();
     customMessage.id = ID();
-    return customMessage
+    return customMessage;
   }
 }

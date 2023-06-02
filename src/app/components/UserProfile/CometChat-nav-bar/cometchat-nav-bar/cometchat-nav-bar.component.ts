@@ -1,14 +1,15 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges } from "@angular/core";
-import * as enums from "../../../../utils/enums";
-import { COMETCHAT_CONSTANTS } from "../../../../utils/messageConstants";
-import { logger } from "../../../../utils/common";
-import { CometChat } from "@cometchat-pro/chat";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import * as enums from '../../../../utils/enums';
+import {logger} from '../../../../utils/common';
+import {CometChat} from '@cometchat-pro/chat';
+import {ActivatedRoute, Router, Routes} from '@angular/router';
+
 @Component({
-  selector: "cometchat-nav-bar",
-  templateUrl: "./cometchat-nav-bar.component.html",
-  styleUrls: ["./cometchat-nav-bar.component.css"],
+  selector: 'cometchat-nav-bar',
+  templateUrl: './cometchat-nav-bar.component.html',
+  styleUrls: ['./cometchat-nav-bar.component.css'],
 })
-export class CometChatNavBarComponent implements OnInit,OnChanges {
+export class CometChatNavBarComponent implements OnInit, OnChanges {
   @Input() item: any = null;
   @Input() type: string = '';
   @Input() lastMessage: any;
@@ -26,19 +27,23 @@ export class CometChatNavBarComponent implements OnInit,OnChanges {
 
   groupMessage = [];
   curentItem: any;
-  constructor() {}
 
-  ngOnInit() {}
-  ngOnChanges(changes: SimpleChanges){
+  constructor(private route: Router) {
+  }
 
- 
-    if(changes[enums.ITEM]){
-      this.curentItem = Object.assign({}, this.item)
+  ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+
+
+    if (changes[enums.ITEM]) {
+      this.curentItem = Object.assign({}, this.item);
     }
-    if(changes[enums.LAST_MESSAGE]){
-      this.lastMessage = changes[enums.LAST_MESSAGE].currentValue
+    if (changes[enums.LAST_MESSAGE]) {
+      this.lastMessage = changes[enums.LAST_MESSAGE].currentValue;
     }
-    
+
   }
 
   /**
@@ -92,13 +97,14 @@ export class CometChatNavBarComponent implements OnInit,OnChanges {
       logger(error);
     }
   }
-  actionHandler(action:any){
-    if(action.type == enums.CALL_TYPE_DIRECT){
+
+  actionHandler(action: any) {
+    if (action.type == enums.CALL_TYPE_DIRECT) {
       this.actionGenerated.emit({
-        type:enums.INCOMING_DIRECT_CALL,
-        payLoad:action.payLoad
-      })
-     
+        type: enums.INCOMING_DIRECT_CALL,
+        payLoad: action.payLoad
+      });
+
     }
 
   }
@@ -172,5 +178,12 @@ export class CometChatNavBarComponent implements OnInit,OnChanges {
     } catch (error) {
       logger(error);
     }
+  }
+
+  logout() {
+    // reset sessionStorege and  navigate to login page
+    sessionStorage.clear();
+    localStorage.clear();
+    this.route.navigate(['/login']);
   }
 }

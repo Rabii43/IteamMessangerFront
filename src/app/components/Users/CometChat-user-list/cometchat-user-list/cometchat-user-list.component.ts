@@ -1,22 +1,13 @@
-import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  OnChanges,
-  Output,
-  EventEmitter,
-  ChangeDetectorRef,
-  SimpleChanges,
-} from "@angular/core";
-import { CometChat } from "@cometchat-pro/chat";
-import { COMETCHAT_CONSTANTS } from "../../../../utils/messageConstants";
-import * as enums from "../../../../utils/enums";
-import { logger } from "../../../../utils/common";
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,} from '@angular/core';
+import {CometChat} from '@cometchat-pro/chat';
+import {COMETCHAT_CONSTANTS} from '../../../../utils/messageConstants';
+import * as enums from '../../../../utils/enums';
+import {logger} from '../../../../utils/common';
+
 @Component({
-  selector: "cometchat-user-list",
-  templateUrl: "./cometchat-user-list.component.html",
-  styleUrls: ["./cometchat-user-list.component.css"],
+  selector: 'cometchat-user-list',
+  templateUrl: './cometchat-user-list.component.html',
+  styleUrls: ['./cometchat-user-list.component.css'],
 })
 export class CometChatUserListComponent
   implements OnInit, OnDestroy, OnChanges {
@@ -39,13 +30,13 @@ export class CometChatUserListComponent
   usersRequest: any;
   timeout: any;
   defaultAvatarImage =
-    "https://data-eu.cometchat.io/assets/images/avatars/spiderman.png";
+    'https://data-eu.cometchat.io/assets/images/avatars/spiderman.png';
 
   USERS: String = COMETCHAT_CONSTANTS.USERS;
   SEARCH: String = COMETCHAT_CONSTANTS.SEARCH;
 
   constructor(private ref: ChangeDetectorRef) {
-   
+
   }
 
   ngOnChanges(change: SimpleChanges) {
@@ -90,7 +81,7 @@ export class CometChatUserListComponent
           this.fetchNextContactList();
         },
         (error) => {
-          logger("error getting details:", { error });
+          logger('error getting details:', {error});
         }
       );
 
@@ -115,19 +106,19 @@ export class CometChatUserListComponent
         new CometChat.MessageListener({
           onTextMessageReceived: (textMessage: any) => {
             // this.messageUpdated(enums.TEXT_MESSAGE_RECEIVED, textMessage);
-    
+
           },
           onCustomMessageReceived: (customMessage: any) => {
-            if(customMessage.type == enums.CALL_TYPE_DIRECT){
-          
+            if (customMessage.type == enums.CALL_TYPE_DIRECT) {
+
               this.actionGenerated.emit({
-                type:enums.CALL_TYPE_DIRECT,
-                payLoad:customMessage
-              })
+                type: enums.CALL_TYPE_DIRECT,
+                payLoad: customMessage
+              });
             }
             // this.messageUpdated(enums.CUSTOM_MESSAGE_RECEIVED, customMessage);
           },
-       
+
         })
       );
     } catch (error) {
@@ -171,7 +162,7 @@ export class CometChatUserListComponent
           .friendsOnly(this.friendsOnly)
           .setSearchKeyword(searchKey)
           .setLimit(30)
-          
+
           .build();
 
         this.fetchNextContactList();
@@ -191,7 +182,9 @@ export class CometChatUserListComponent
         Math.round(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) ===
         Math.round(e.currentTarget.clientHeight);
 
-      if (bottom) this.fetchNextContactList();
+      if (bottom) {
+        this.fetchNextContactList();
+      }
     } catch (error) {
       logger(error);
     }
@@ -215,7 +208,7 @@ export class CometChatUserListComponent
           }
         },
         (error: any) => {
-          logger("User list fetching failed with error:", error);
+          logger('User list fetching failed with error:', error);
         }
       );
     } catch (error) {
@@ -236,8 +229,8 @@ export class CometChatUserListComponent
 
       //if found in the list, update user object
       if (userKey > -1) {
-        let userObj = { ...userlist[userKey] as {} };
-        let newUserObj = { ...userObj, ...user };
+        let userObj = {...userlist[userKey] as {}};
+        let newUserObj = {...userObj, ...user};
         userlist.splice(userKey, 1, newUserObj);
 
         this.usersList = [...userlist];
@@ -269,7 +262,7 @@ export class CometChatUserListComponent
         return false;
       }
 
-      this.actionGenerated.emit({ type: enums.CLOSE_MENU_CLICKED });
+      this.actionGenerated.emit({type: enums.CLOSE_MENU_CLICKED});
     } catch (error) {
       logger(error);
     }

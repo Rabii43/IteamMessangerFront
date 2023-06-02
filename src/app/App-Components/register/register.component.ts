@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Form } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CometChat } from '@cometchat-pro/chat';
-import { COMETCHAT_CONSTANTS } from 'src/CONSTS';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {CometChat} from '@cometchat-pro/chat';
+import {COMETCHAT_CONSTANTS} from 'src/CONSTS';
 
 @Component({
   selector: 'app-register',
@@ -10,19 +9,17 @@ import { COMETCHAT_CONSTANTS } from 'src/CONSTS';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  fd:FormData;
-  username: any = "";
-  email: any = "";
-  password: any = "";
-  photo: any = "";
-  name: any = "";
-
-
-
-  constructor(public router: Router) {}
-
+  fd: FormData;
+  username: any = '';
+  email: any = '';
+  password: any = '';
+  photo: any = '';
+  name: any = '';
   onLoginError: boolean = false;
-  errorMsg: string = "";
+  errorMsg: string = '';
+
+  constructor(public router: Router) {
+  }
 
   ngOnInit() {
   }
@@ -33,19 +30,19 @@ export class RegisterComponent implements OnInit {
    */
   onRegister(UID) {
 
-      console.log("uploaded");
-      let  user = new CometChat.User('testing');
-      user.setName(this.name);
-      user.setUid(this.username);
-      user.setAvatar("https://easyupload.io/ixae0u");
-      user.setRole('default');
-      CometChat.createUser(user, COMETCHAT_CONSTANTS.AUTH_KEY).then(
-     user => {
-         console.log("user created", user);
-         this.router.navigate(["/login"]);
-      },error => {
-        console.log("error", error);
-       })
+    console.log('uploaded');
+    let user = new CometChat.User('testing');
+    user.setName(this.name);
+    user.setUid(this.username);
+    user.setAvatar('https://data-us.cometchat.io/assets/images/avatars/captainamerica.png');
+    user.setRole('default');
+    CometChat.createUser(user, COMETCHAT_CONSTANTS.AUTH_KEY).then(
+      user => {
+        console.log('user created', user);
+        this.router.navigate(['/login']);
+      }, error => {
+        console.log('error', error);
+      });
   }
 
 

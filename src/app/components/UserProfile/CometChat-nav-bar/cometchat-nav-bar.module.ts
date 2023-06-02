@@ -5,15 +5,17 @@ import { CometChatUserProfile } from "../CometChat-user-profile/cometchat-user-p
 import { CometChatUserList } from "../../Users/CometChat-user-list/cometchat-user-list.module";
 import { CometChatGroupList } from "../../Groups/CometChat-group-list/cometchat-group-list.module";
 import { CometChatConversationList } from "../../Chats/CometChat-conversation-list/cometchat-conversation-list.module";
+import {RouterModule} from '@angular/router';
 @NgModule({
   declarations: [CometChatNavBarComponent],
-  imports: [
-    CommonModule,
-    CometChatUserProfile,
-    CometChatUserList,
-    CometChatGroupList,
-    CometChatConversationList,
-  ],
+    imports: [
+        CommonModule,
+        CometChatUserProfile,
+        CometChatUserList,
+        CometChatGroupList,
+        CometChatConversationList,
+        RouterModule,
+    ],
   exports: [CometChatNavBarComponent],
 })
 export class CometChatNavBar {}

@@ -1,19 +1,12 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  Output,
-  EventEmitter,
-  SimpleChanges,
-  OnChanges,
-} from "@angular/core";
-import * as enums from "../../../../utils/enums";
-import { COMETCHAT_CONSTANTS } from "../../../../utils/messageConstants";
-import { logger } from "../../../../utils/common";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
+import * as enums from '../../../../utils/enums';
+import {COMETCHAT_CONSTANTS} from '../../../../utils/messageConstants';
+import {logger} from '../../../../utils/common';
+
 @Component({
-  selector: "cometchat-user-details",
-  templateUrl: "./cometchat-user-details.component.html",
-  styleUrls: ["./cometchat-user-details.component.css"],
+  selector: 'cometchat-user-details',
+  templateUrl: './cometchat-user-details.component.html',
+  styleUrls: ['./cometchat-user-details.component.css'],
 })
 export class CometChatUserDetailsComponent implements OnInit, OnChanges {
   @Input() item = null;
@@ -24,7 +17,9 @@ export class CometChatUserDetailsComponent implements OnInit, OnChanges {
   DETAILS: String = COMETCHAT_CONSTANTS.DETAILS;
 
   blockUserText: string = '';
-  constructor() {}
+
+  constructor() {
+  }
 
   ngOnChanges(change: SimpleChanges) {
     try {
@@ -35,7 +30,9 @@ export class CometChatUserDetailsComponent implements OnInit, OnChanges {
       logger(error);
     }
   }
-  ngOnInit() {}
+
+  ngOnInit() {
+  }
 
   /**
    * Gets Status If user is Blocked/Unblocked
