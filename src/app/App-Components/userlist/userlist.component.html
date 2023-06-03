@@ -1,0 +1,67 @@
+<table class="user-table">
+  <thead>
+  <tr>
+    <th class=" bg-dark">ID</th>
+    <th>Name</th>
+    <th>Status</th>
+    <th>Lreated at</th>
+    <th>last active at</th>
+    <th>Avatar</th>
+    <th>Role</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users">
+    <td>{{ user?.uid  }}</td>
+    <td>{{ user?.name }}</td>
+    <td>{{ user?.status}}</td>
+    <td>{{ toDate(user?.createdAt) }} </td>
+    <td>{{ toDate(user?.lastActiveAt)}} </td>
+    <td><img class="img" src="{{user?.avatar?.endsWith('png','jpeg','jpg') ? user?.avatar : userIcon}}"></td>
+    <td>{{ user?.role}}</td>
+    <td>
+      <button class="btn" (click)="this.delete(user)">Delete</button>
+      <button class="btn"(click)="update(user)">Edit</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<form class="update-form" [formGroup]="updateForm" (ngSubmit)="updateUser(this.updateForm.value)" *ngIf="this.updateFormShown">
+  <div class="form-control">
+    <label for="name">Name:</label>
+    <input type="text" id="name" formControlName="name">
+  </div>
+  <div class="form-control">
+    <label for="photoLink">Photo Link:</label>
+    <input type="text" id="photoLink" formControlName="avatar">
+  </div>
+  <div class="btn-container">
+    <button class="btn" type="submit">Submit</button>
+    <button class="btn" type="reste" (click)="this.updateFormShown = false">Cancel</button>
+  </div>
+  
+</form>
+
+<form class="update-form" *ngIf="this.deleteFormShown">
+  <div class="form-control">
+    Delete user  {{ toDeleteUser.name }}
+  </div>
+  <div class="btn-container">
+    <button class="btn" type="submit" (click)="deleteUser()">Delete</button>
+    <button class="btn" type="rest" (click)="this.deleteFormShown = false;">Cancel</button>
+  </div>
+  
+</form>
+
+<div class="alert-danger" *ngIf="alertDanger">
+  <span class="closebtn" (click)="alertSuccess = false" >&times;</span> 
+  <strong>Error!</strong> {{alertContent}}
+</div>
+
+<div class="alert-success" *ngIf="alertSuccess">
+  <span class="closebtn" (click)="alertDanger = false">&times;</span> 
+  <strong>Success!</strong> {{alertContent}}
+</div>
+

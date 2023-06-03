@@ -1,0 +1,110 @@
+/* user-list.component.css */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+}
+
+.user-table button {
+  margin-left: 5px;
+}
+.img{
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
+}
+
+td, th{
+  text-align: center;
+}
+
+.update-form{
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+ padding: 10px 50px;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ z-index: 100;
+ transform: translate(-50%, 0);
+ border: #ddd 0.1px solid;
+ border-radius: 3px;
+ display: flex;
+ justify-content: center;
+ flex-direction: column;
+}
+
+.form-control{
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.btn-container{
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+.btn-container > button{
+  margin: 5px;
+}
+.form-control > input{
+  border-radius: 3px;
+  border: 0.01px solid #ddd;
+}
+.btn{
+  background-color: #030303;
+  border-radius: 3px;
+  font-weight: bold;
+  padding: 10px 6px;
+  color: #ddd;
+  margin-top: 15px;
+  border: solid  #030303 0.1px;
+}
+.btn:hover{
+  background-color: #ddd;
+  color: #030303;
+  cursor: pointer;
+  border: solid  #ddd 0.1px;
+}
+
+.alert-danger{
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+.alert-success{
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  padding: 20px;
+  background-color: #029f36;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}

@@ -14,16 +14,7 @@ import {UserListScreenPageComponent} from './App-Components/user-list-screen-pag
 import {GroupListScreenPageComponent} from './App-Components/Pages/group-list-screen-page/group-list-screen-page.component';
 import {CometChatUnifiedPageComponent} from './App-Components/Pages/comet-chat-unified-page/comet-chat-unified-page.component';
 import {RegisterComponent} from './App-components/register/register.component';
-import {
-  CometChatUserDetailsComponent
-} from './components/Users/CometChat-user-details/cometchat-user-details/cometchat-user-details.component';
-import {CometChatUserListComponent} from './components/Users/CometChat-user-list/cometchat-user-list/cometchat-user-list.component';
-import {
-  CometChatUserListWithMessagesComponent
-} from './components/Users/CometChat-user-list-with-messages/cometchat-user-list-with-messages/cometchat-user-list-with-messages.component';
-import {
-  CometChatUserProfileComponent
-} from './components/UserProfile/CometChat-user-profile/cometchat-user-profile/cometchat-user-profile.component';
+import {UserListAdminComponent} from './App-Components/userlist/userlist.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -53,7 +44,7 @@ const routes: Routes = [
   },
   {
     path: 'userList',
-    component: UserListPageComponent,
+    component: UserListAdminComponent,
   },
   {
     path: 'contact-screen',
@@ -73,6 +64,9 @@ const routes: Routes = [
   },
   {
     path: 'Accueil',
+    component: CometChatUnifiedPageComponent,
+  },  {
+    path: 'admin',
     component: CometChatUnifiedPageComponent,
   },
 ];

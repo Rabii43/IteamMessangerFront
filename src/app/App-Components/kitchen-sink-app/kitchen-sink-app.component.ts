@@ -39,7 +39,7 @@ export class KitchenSinkAppComponent implements OnInit {
         if (user.getRole() === 'admin') {
           this.router.navigate(['/admin']);
         } else {
-          this.router.navigate(['/Home']);
+          this.router.navigate(['/Accueil']);
         }
       },
       (error) => {
